@@ -1,3 +1,5 @@
+using ASP.ExceptionsHandler.Infrastructure.ExceptionHandling;
+using ASP.ExceptionsHandler.Services;
 using Serilog;
 
 internal class Program
@@ -18,10 +20,16 @@ internal class Program
             });
 
             // Add services to the container.
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Register services
+            builder.Services.AddScoped<ITodoService, TodoService>();
+
+            // Register exception handler
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
             var app = builder.Build();
 
@@ -34,6 +42,7 @@ internal class Program
 
             app.UseSerilogRequestLogging();
             app.UseAuthorization();
+            app.UseExceptionHandler();
             app.MapControllers();
 
             app.Run();

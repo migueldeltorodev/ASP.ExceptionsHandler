@@ -6,15 +6,8 @@ namespace ASP.ExceptionsHandler.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : ControllerBase
+    public class TodoController(ITodoService _todoService) : ControllerBase
     {
-        private readonly ITodoService _todoService;
-
-        public TodoController(ITodoService todoService)
-        {
-            _todoService = todoService;
-        }
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Todo>>> GetAll()
         {

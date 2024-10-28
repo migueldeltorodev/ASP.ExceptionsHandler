@@ -16,19 +16,13 @@ namespace ASP.ExceptionsHandler.Services
         public async Task<Todo> GetByIdAsync(int id)
         {
             var todo = await Task.FromResult(_todos.FirstOrDefault(t => t.Id == id));
-            if (todo == null)
-            {
-                throw new TodoNotFoundException(id);
-            }
+            if (todo == null) throw new TodoNotFoundException(id);
             return todo;
         }
 
         public async Task<Todo> CreateAsync(CreateTodoRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Title))
-            {
-                throw new InvalidTodoException("Title is required");
-            }
+            if (string.IsNullOrWhiteSpace(request.Title)) throw new InvalidTodoException("Title is required");
 
             var todo = new Todo
             {
@@ -47,10 +41,7 @@ namespace ASP.ExceptionsHandler.Services
         {
             var todo = await GetByIdAsync(id);
 
-            if (string.IsNullOrWhiteSpace(request.Title))
-            {
-                throw new InvalidTodoException("Title is required");
-            }
+            if (string.IsNullOrWhiteSpace(request.Title)) throw new InvalidTodoException("Title is required");
 
             todo.Title = request.Title;
             todo.Description = request.Description;
