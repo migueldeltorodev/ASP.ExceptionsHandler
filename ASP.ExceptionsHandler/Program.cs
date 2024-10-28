@@ -1,11 +1,14 @@
 using ASP.ExceptionsHandler.Infrastructure.ExceptionHandling;
 using ASP.ExceptionsHandler.Services;
+using DotNetEnv;
 using Serilog;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        Env.Load();
+
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .CreateLogger();
@@ -18,6 +21,14 @@ internal class Program
                 loggerConfiguration.WriteTo.Console();
                 loggerConfiguration.ReadFrom.Configuration(context.Configuration);
             });
+
+            // Configurate serilog from appsettings.json
+            var logPath = Environment.GetEnvironmentVariable("LOG_PATH");
+            var serverUrl = Environment.GetEnvironmentVariable("SEQ_SERVER_URL");
+
+            // Modificar la configuración de Serilog
+            builder.Configuration["Serilog:WriteTo:0:Args:path"] = logPath;
+            builder.Configuration["Serilog:WriteTo:1:Args:serverUrl"] = serverUrl;
 
             // Add services to the container.
             builder.Services.AddControllers();
