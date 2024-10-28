@@ -1,0 +1,6 @@
+@ASP.ExceptionsHandler_HostAddress = http://localhost:5276
+
+GET {{ASP.ExceptionsHandler_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
